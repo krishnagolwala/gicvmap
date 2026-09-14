@@ -1,0 +1,276 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="Inter, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <marker id="a1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="a2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="a3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+    <marker id="a4" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="a5" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="a6" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+    </marker>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg2)"/>
+
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-size="22" font-weight="700" fill="#f1f5f9">Detection-to-Alert Workflow</text>
+  <text x="600" y="62" text-anchor="middle" font-size="12" fill="#64748b">Real-time data flow from camera feed to operator alert</text>
+
+  <!-- ============================================ -->
+  <!-- PHASE 1: CAPTURE -->
+  <!-- ============================================ -->
+  <text x="60" y="105" font-size="13" fill="#3b82f6" font-weight="700" letter-spacing="2">PHASE 1: CAPTURE</text>
+
+  <!-- Sentinel Camera -->
+  <g transform="translate(60, 120)">
+    <rect width="200" height="120" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="100" y="30" text-anchor="middle" font-size="24">&#128247;</text>
+    <text x="100" y="52" text-anchor="middle" font-size="13" fill="#e2e8f0" font-weight="600">Sentinel Camera</text>
+    <text x="100" y="68" text-anchor="middle" font-size="10" fill="#64748b">cam01 - cam30</text>
+    <line x1="20" y1="80" x2="180" y2="80" stroke="#334155" stroke-width="1"/>
+    <text x="30" y="96" font-size="9" fill="#94a3b8">H.264/H.265  |  1080p</text>
+    <text x="30" y="110" font-size="9" fill="#94a3b8">25fps native  |  PTS timing</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="260" y1="180" x2="310" y2="180" stroke="#3b82f6" stroke-width="2" marker-end="url(#a1)" filter="url(#glow2)"/>
+
+  <!-- MediaMTX -->
+  <g transform="translate(315, 120)">
+    <rect width="180" height="120" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" font-size="24">&#128225;</text>
+    <text x="90" y="52" text-anchor="middle" font-size="13" fill="#e2e8f0" font-weight="600">MediaMTX</text>
+    <text x="90" y="68" text-anchor="middle" font-size="10" fill="#64748b">Local RTSP Relay</text>
+    <line x1="15" y1="80" x2="165" y2="80" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="96" font-size="9" fill="#94a3b8">:8554 RTSP (internal)</text>
+    <text x="25" y="110" font-size="9" fill="#94a3b8">:8888 HLS (dashboard)</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="495" y1="180" x2="545" y2="180" stroke="#06b6d4" stroke-width="2" marker-end="url(#a6)" filter="url(#glow2)"/>
+  <text x="520" y="170" text-anchor="middle" font-size="9" fill="#22d3ee">TCP</text>
+
+  <!-- ============================================ -->
+  <!-- PHASE 2: AI PROCESSING -->
+  <!-- ============================================ -->
+  <text x="550" y="105" font-size="13" fill="#8b5cf6" font-weight="700" letter-spacing="2">PHASE 2: AI PROCESSING</text>
+
+  <!-- AI Service -->
+  <g transform="translate(550, 120)">
+    <rect width="250" height="120" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text x="125" y="30" text-anchor="middle" font-size="24">&#129504;</text>
+    <text x="125" y="52" text-anchor="middle" font-size="13" fill="#e2e8f0" font-weight="600">AI Service</text>
+    <text x="125" y="68" text-anchor="middle" font-size="10" fill="#64748b">Object Detection + OCR Engine</text>
+    <line x1="15" y1="80" x2="235" y2="80" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(20, 88)">
+      <rect width="65" height="22" rx="5" fill="rgba(139,92,246,0.15)"/>
+      <text x="32" y="15" text-anchor="middle" font-size="8" fill="#a78bfa">YOLOv8</text>
+    </g>
+    <g transform="translate(95, 88)">
+      <rect width="65" height="22" rx="5" fill="rgba(139,92,246,0.15)"/>
+      <text x="32" y="15" text-anchor="middle" font-size="8" fill="#a78bfa">EasyOCR</text>
+    </g>
+    <g transform="translate(170, 88)">
+      <rect width="65" height="22" rx="5" fill="rgba(139,92,246,0.15)"/>
+      <text x="32" y="15" text-anchor="middle" font-size="8" fill="#a78bfa">OpenCV</text>
+    </g>
+  </g>
+
+  <!-- Arrow down to detection output -->
+  <line x1="675" y1="240" x2="675" y2="285" stroke="#8b5cf6" stroke-width="2" marker-end="url(#a3)" filter="url(#glow2)"/>
+
+  <!-- Detection Output Box -->
+  <g transform="translate(550, 290)">
+    <rect width="250" height="80" rx="10" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
+    <text x="125" y="22" text-anchor="middle" font-size="11" fill="#a78bfa" font-weight="600">Detection Event</text>
+    <text x="20" y="40" font-size="9" fill="#94a3b8">camera_id: cam04</text>
+    <text x="20" y="52" font-size="9" fill="#94a3b8">class: motorcycle | conf: 0.85</text>
+    <text x="20" y="64" font-size="9" fill="#94a3b8">plate: GJ27EF9012 | plate_conf: 0.82</text>
+  </g>
+
+  <!-- Arrow to Redis -->
+  <line x1="675" y1="370" x2="675" y2="410" stroke="#ef4444" stroke-width="2" marker-end="url(#a5)" filter="url(#glow2)"/>
+
+  <!-- ============================================ -->
+  <!-- PHASE 3: EVENT STREAMING -->
+  <!-- ============================================ -->
+  <text x="550" y="435" font-size="13" fill="#ef4444" font-weight="700" letter-spacing="2">PHASE 3: EVENT STREAMING</text>
+
+  <!-- Redis -->
+  <g transform="translate(550, 445)">
+    <rect width="250" height="80" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="125" y="25" text-anchor="middle" font-size="14" fill="#f87171" font-weight="700">Redis Stream</text>
+    <text x="125" y="42" text-anchor="middle" font-size="10" fill="#64748b">detection_events</text>
+    <line x1="15" y1="52" x2="235" y2="52" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="66" font-size="9" fill="#94a3b8">10,000+ events  |  Consumer groups</text>
+    <text x="25" y="78" font-size="9" fill="#94a3b8">Sub-second delivery  |  Persistent</text>
+  </g>
+
+  <!-- Arrow to Alert Worker -->
+  <line x1="675" y1="525" x2="675" y2="565" stroke="#f97316" stroke-width="2" marker-end="url(#a4)" filter="url(#glow2)"/>
+
+  <!-- ============================================ -->
+  <!-- PHASE 4: ALERT GENERATION -->
+  <!-- ============================================ -->
+  <text x="550" y="590" font-size="13" fill="#f97316" font-weight="700" letter-spacing="2">PHASE 4: ALERT GENERATION</text>
+
+  <!-- Alert Worker -->
+  <g transform="translate(550, 600)">
+    <rect width="250" height="80" rx="10" fill="#1e293b" stroke="#f97316" stroke-width="1.5"/>
+    <text x="125" y="25" text-anchor="middle" font-size="14" fill="#fb923c" font-weight="700">Alert Worker</text>
+    <text x="125" y="42" text-anchor="middle" font-size="10" fill="#64748b">Watchlist Matching Engine</text>
+    <line x1="15" y1="52" x2="235" y2="52" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="66" font-size="9" fill="#94a3b8">Stolen vehicles  |  FIR watchlist</text>
+    <text x="25" y="78" font-size="9" fill="#94a3b8">Missing persons  |  Suspect DB</text>
+  </g>
+
+  <!-- Arrow to Alert Service -->
+  <line x1="675" y1="680" x2="675" y2="715" stroke="#f97316" stroke-width="2" marker-end="url(#a4)" filter="url(#glow2)"/>
+
+  <!-- Alert Output -->
+  <g transform="translate(550, 720)">
+    <rect width="250" height="70" rx="10" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+    <text x="125" y="22" text-anchor="middle" font-size="11" fill="#f87171" font-weight="600">CRITICAL ALERT #1818</text>
+    <text x="20" y="40" font-size="9" fill="#94a3b8">Plate GJ03GH3456 matched watchlist #4</text>
+    <text x="20" y="52" font-size="9" fill="#94a3b8">Missing person vehicle - last seen 2026-08-25</text>
+    <text x="20" y="64" font-size="9" fill="#94a3b8">Camera: cam28 - Chandkheda</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- PHASE 5: DELIVERY -->
+  <!-- ============================================ -->
+
+  <!-- Arrow right from Alert to Delivery -->
+  <line x1="800" y1="755" x2="850" y2="755" stroke="#06b6d4" stroke-width="2" marker-end="url(#a6)" filter="url(#glow2)"/>
+
+  <text x="860" y="435" font-size="13" fill="#06b6d4" font-weight="700" letter-spacing="2">PHASE 5: DELIVERY</text>
+
+  <!-- WebSocket -->
+  <g transform="translate(860, 445)">
+    <rect width="280" height="65" rx="10" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="140" y="22" text-anchor="middle" font-size="13" fill="#22d3ee" font-weight="700">WebSocket Push</text>
+    <text x="140" y="38" text-anchor="middle" font-size="10" fill="#64748b">Real-time alert broadcast to all connected clients</text>
+    <text x="140" y="54" text-anchor="middle" font-size="9" fill="#94a3b8">/api/v1/alerts/ws  |  Auto-reconnect  |  Toast notifications</text>
+  </g>
+
+  <!-- Arrow to Dashboard -->
+  <line x1="1000" y1="510" x2="1000" y2="540" stroke="#06b6d4" stroke-width="2" marker-end="url(#a6)" filter="url(#glow2)"/>
+
+  <!-- Dashboard -->
+  <g transform="translate(860, 545)">
+    <rect width="280" height="80" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="140" y="25" text-anchor="middle" font-size="13" fill="#60a5fa" font-weight="700">Dashboard</text>
+    <text x="140" y="42" text-anchor="middle" font-size="10" fill="#64748b">React Frontend</text>
+    <line x1="15" y1="52" x2="265" y2="52" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="66" font-size="9" fill="#94a3b8">AlertPanel  |  VideoWall  |  VehicleSearch</text>
+    <text x="25" y="78" font-size="9" fill="#94a3b8">CameraMap  |  AlertRules  |  Reports</text>
+  </g>
+
+  <!-- Arrow to Operator -->
+  <line x1="1000" y1="625" x2="1000" y2="660" stroke="#3b82f6" stroke-width="2" marker-end="url(#a1)" filter="url(#glow2)"/>
+
+  <!-- Operator -->
+  <g transform="translate(860, 665)">
+    <rect width="280" height="60" rx="10" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+    <text x="140" y="22" text-anchor="middle" font-size="22">&#128100;</text>
+    <text x="140" y="42" text-anchor="middle" font-size="12" fill="#e2e8f0" font-weight="600">Operator Action</text>
+    <text x="140" y="55" text-anchor="middle" font-size="9" fill="#64748b">Acknowledge | Dismiss | Export CSV | View trajectory</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- SIDE FLOWS -->
+  <!-- ============================================ -->
+
+  <!-- Database side flow -->
+  <g transform="translate(60, 300)">
+    <rect width="200" height="100" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="100" y="25" text-anchor="middle" font-size="13" fill="#34d399" font-weight="700">PostgreSQL 15</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#64748b">+ PostGIS + pgvector</text>
+    <line x1="15" y1="52" x2="185" y2="52" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="66" font-size="9" fill="#94a3b8">cameras (30)</text>
+    <text x="25" y="78" font-size="9" fill="#94a3b8">alerts (1,758+)  |  watchlist</text>
+    <text x="25" y="90" font-size="9" fill="#94a3b8">users (5)  |  alert_rules (4)</text>
+  </g>
+
+  <!-- Arrow from AI to DB -->
+  <line x1="260" y1="350" x2="550" y2="350" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="405" y="342" text-anchor="middle" font-size="9" fill="#34d399">Store detection</text>
+
+  <!-- Auth side flow -->
+  <g transform="translate(60, 430)">
+    <rect width="200" height="80" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="100" y="25" text-anchor="middle" font-size="13" fill="#34d399" font-weight="700">Auth Service</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#64748b">JWT + RBAC</text>
+    <line x1="15" y1="52" x2="185" y2="52" stroke="#334155" stroke-width="1"/>
+    <text x="25" y="66" font-size="9" fill="#94a3b8">6 roles  |  13 permissions</text>
+    <text x="25" y="78" font-size="9" fill="#94a3b8">Multi-department isolation</text>
+  </g>
+
+  <!-- Arrow from Auth to Alert -->
+  <line x1="260" y1="470" x2="550" y2="640" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="400" y="540" text-anchor="middle" font-size="9" fill="#34d399">RBAC check</text>
+
+  <!-- Demo Seeder -->
+  <g transform="translate(60, 540)">
+    <rect width="200" height="60" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <text x="100" y="22" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="700">Demo Seeder</text>
+    <text x="100" y="42" text-anchor="middle" font-size="9" fill="#64748b">Synthetic detections every 3-5s</text>
+  </g>
+
+  <!-- Arrow from Demo to Redis -->
+  <line x1="260" y1="570" x2="550" y2="490" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="400" y="525" text-anchor="middle" font-size="9" fill="#64748b">Synthetic events</text>
+
+  <!-- ============================================ -->
+  <!-- TIMELINE -->
+  <!-- ============================================ -->
+  <g transform="translate(60, 810)">
+    <rect width="1080" height="70" rx="10" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+    <text x="30" y="22" font-size="11" fill="#60a5fa" font-weight="600">Latency Timeline</text>
+
+    <!-- Timeline bar -->
+    <line x1="30" y1="42" x2="1050" y2="42" stroke="#334155" stroke-width="2"/>
+
+    <!-- Ticks -->
+    <circle cx="30" cy="42" r="5" fill="#3b82f6"/>
+    <text x="30" y="58" text-anchor="middle" font-size="8" fill="#64748b">0ms</text>
+    <text x="30" y="35" text-anchor="middle" font-size="8" fill="#60a5fa">Frame captured</text>
+
+    <circle cx="250" cy="42" r="5" fill="#8b5cf6"/>
+    <text x="250" y="58" text-anchor="middle" font-size="8" fill="#64748b">~500ms</text>
+    <text x="250" y="35" text-anchor="middle" font-size="8" fill="#a78bfa">YOLO + OCR</text>
+
+    <circle cx="470" cy="42" r="5" fill="#ef4444"/>
+    <text x="470" y="58" text-anchor="middle" font-size="8" fill="#64748b">~600ms</text>
+    <text x="470" y="35" text-anchor="middle" font-size="8" fill="#f87171">Redis stream</text>
+
+    <circle cx="690" cy="42" r="5" fill="#f97316"/>
+    <text x="690" y="58" text-anchor="middle" font-size="8" fill="#64748b">~700ms</text>
+    <text x="690" y="35" text-anchor="middle" font-size="8" fill="#fb923c">Watchlist match</text>
+
+    <circle cx="910" cy="42" r="5" fill="#06b6d4"/>
+    <text x="910" y="58" text-anchor="middle" font-size="8" fill="#64748b">~800ms</text>
+    <text x="910" y="35" text-anchor="middle" font-size="8" fill="#22d3ee">Alert on screen</text>
+
+    <circle cx="1050" cy="42" r="5" fill="#10b981"/>
+    <text x="1050" y="35" text-anchor="middle" font-size="8" fill="#34d399">Operator acts</text>
+  </g>
+</svg>

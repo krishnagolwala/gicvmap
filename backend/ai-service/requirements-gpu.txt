@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════════════════════
+# GICVMAP — AI Service Dependencies (GPU / CUDA build)
+# ═══════════════════════════════════════════════════════════════
+
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.3
+python-multipart==0.0.6
+
+# AI/ML — GPU build with CUDA 12.1
+# PyTorch CUDA wheels (~2GB — this is why the image is large)
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.3.1+cu121
+torchvision==0.18.1+cu121
+ultralytics>=8.0.0
+
+# OCR — GPU enabled
+easyocr>=1.7.0
+
+# Video capture
+opencv-python-headless>=4.8.0
+numpy
+
+# Storage
+minio==7.2.7
+
+# Redis
+redis[hiredis]==5.0.1
+
+# HTTP
+httpx==0.25.2
+
+# Database (for startup camera metadata lookup)
+sqlalchemy==2.0.23
+asyncpg==0.29.0
+
+# rebuild-cache-v2: invalidate poisoned pip layer from disk-full era

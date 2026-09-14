@@ -1,0 +1,283 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="Inter, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="600" y="45" text-anchor="middle" font-size="24" font-weight="700" fill="#f1f5f9">GICVMAP — System Architecture</text>
+  <text x="600" y="70" text-anchor="middle" font-size="13" fill="#64748b">Gujarat Integrated CCTV Video Management &amp; Analytics Platform</text>
+
+  <!-- === LAYER: SENTINEL CAMERAS === -->
+  <rect x="30" y="100" width="1140" height="100" rx="12" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="50" y="122" font-size="11" fill="#64748b" font-weight="600" text-transform="uppercase" letter-spacing="2">SENTINEL CAMERA GRID</text>
+
+  <!-- Camera icons -->
+  <g transform="translate(80, 130)">
+    <rect width="90" height="55" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="45" y="22" text-anchor="middle" font-size="18">&#128247;</text>
+    <text x="45" y="38" text-anchor="middle" font-size="10" fill="#e2e8f0" font-weight="600">cam01</text>
+    <text x="45" y="50" text-anchor="middle" font-size="8" fill="#64748b">RTSP</text>
+  </g>
+  <g transform="translate(185, 130)">
+    <rect width="90" height="55" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="45" y="22" text-anchor="middle" font-size="18">&#128247;</text>
+    <text x="45" y="38" text-anchor="middle" font-size="10" fill="#e2e8f0" font-weight="600">cam02</text>
+    <text x="45" y="50" text-anchor="middle" font-size="8" fill="#64748b">RTSP</text>
+  </g>
+  <g transform="translate(290, 130)">
+    <rect width="90" height="55" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="45" y="22" text-anchor="middle" font-size="18">&#128247;</text>
+    <text x="45" y="38" text-anchor="middle" font-size="10" fill="#e2e8f0" font-weight="600">cam03</text>
+    <text x="45" y="50" text-anchor="middle" font-size="8" fill="#64748b">RTSP</text>
+  </g>
+  <text x="415" y="163" font-size="20" fill="#64748b">...</text>
+  <g transform="translate(450, 130)">
+    <rect width="90" height="55" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="45" y="22" text-anchor="middle" font-size="18">&#128247;</text>
+    <text x="45" y="38" text-anchor="middle" font-size="10" fill="#e2e8f0" font-weight="600">cam30</text>
+    <text x="45" y="50" text-anchor="middle" font-size="8" fill="#64748b">RTSP</text>
+  </g>
+
+  <!-- Sentinel label -->
+  <g transform="translate(800, 130)">
+    <rect width="280" height="55" rx="8" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+    <text x="140" y="22" text-anchor="middle" font-size="11" fill="#60a5fa" font-weight="600">103.250.160.189:8554</text>
+    <text x="140" y="38" text-anchor="middle" font-size="10" fill="#94a3b8">Public RTSP Gateway</text>
+    <text x="140" y="50" text-anchor="middle" font-size="9" fill="#64748b">TCP transport + email:password auth</text>
+  </g>
+
+  <!-- === ARROWS: Cameras → MediaMTX === -->
+  <line x1="335" y1="185" x2="335" y2="230" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)" filter="url(#glow)"/>
+  <line x1="495" y1="185" x2="495" y2="230" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)" filter="url(#glow)"/>
+  <text x="415" y="215" text-anchor="middle" font-size="10" fill="#60a5fa" font-weight="500">RTSP (TCP)</text>
+
+  <!-- === LAYER: MEDIA GATEWAY === -->
+  <rect x="150" y="235" width="520" height="70" rx="10" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="200" y="262" font-size="14" fill="#22d3ee" font-weight="700">MediaMTX</text>
+  <text x="200" y="280" font-size="10" fill="#94a3b8">RTSP Relay / HLS Gateway</text>
+  <text x="420" y="262" font-size="10" fill="#64748b">:8554 RTSP  |  :8888 HLS  |  :8889 WebRTC</text>
+  <text x="420" y="278" font-size="10" fill="#64748b">sourceOnDemand  |  tcp transport  |  fmp4</text>
+
+  <!-- === ARROWS: MediaMTX → AI Service === -->
+  <line x1="410" y1="305" x2="410" y2="345" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrowPurple)" filter="url(#glow)"/>
+  <text x="480" y="330" font-size="10" fill="#a78bfa" font-weight="500">Local RTSP</text>
+
+  <!-- === LAYER: AI SERVICE === -->
+  <rect x="150" y="350" width="520" height="85" rx="10" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="200" y="375" font-size="14" fill="#a78bfa" font-weight="700">AI Service</text>
+  <text x="200" y="393" font-size="10" fill="#94a3b8">Object Detection + OCR Engine</text>
+  <g transform="translate(170, 400)">
+    <rect width="100" height="25" rx="5" fill="rgba(139,92,246,0.15)"/>
+    <text x="50" y="16" text-anchor="middle" font-size="9" fill="#a78bfa">YOLOv8 (CPU)</text>
+  </g>
+  <g transform="translate(285, 400)">
+    <rect width="100" height="25" rx="5" fill="rgba(139,92,246,0.15)"/>
+    <text x="50" y="16" text-anchor="middle" font-size="9" fill="#a78bfa">EasyOCR</text>
+  </g>
+  <g transform="translate(400, 400)">
+    <rect width="100" height="25" rx="5" fill="rgba(139,92,246,0.15)"/>
+    <text x="50" y="16" text-anchor="middle" font-size="9" fill="#a78bfa">OpenCV</text>
+  </g>
+  <text x="540" y="375" font-size="10" fill="#64748b">30 stream processors</text>
+  <text x="540" y="393" font-size="10" fill="#64748b">Max 4 concurrent</text>
+
+  <!-- === ARROWS: AI → Redis === -->
+  <line x1="410" y1="435" x2="410" y2="475" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)" filter="url(#glow)"/>
+  <text x="480" y="460" font-size="10" fill="#f87171" font-weight="500">detection_events</text>
+
+  <!-- === LAYER: REDIS === -->
+  <rect x="150" y="480" width="520" height="60" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="200" y="505" font-size="14" fill="#f87171" font-weight="700">Redis</text>
+  <text x="200" y="522" font-size="10" fill="#94a3b8">Event Stream + Cache</text>
+  <text x="420" y="505" font-size="10" fill="#64748b">Stream: detection_events</text>
+  <text x="420" y="522" font-size="10" fill="#64748b">Consumer groups for parallel processing</text>
+
+  <!-- === ARROWS: Redis → Alert Worker === -->
+  <line x1="335" y1="540" x2="335" y2="575" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)" filter="url(#glow)"/>
+  <text x="400" y="562" font-size="10" fill="#f87171" font-weight="500">Stream consumer</text>
+
+  <!-- === LAYER: ALERT WORKER === -->
+  <rect x="150" y="580" width="520" height="55" rx="10" fill="#1e293b" stroke="#f97316" stroke-width="1.5"/>
+  <text x="200" y="605" font-size="14" fill="#fb923c" font-weight="700">Alert Worker</text>
+  <text x="200" y="622" font-size="10" fill="#94a3b8">Watchlist Matching Engine</text>
+  <text x="420" y="605" font-size="10" fill="#64748b">Stolen vehicles  |  Wanted persons</text>
+  <text x="420" y="622" font-size="10" fill="#64748b">CRITICAL / HIGH / MEDIUM alerts</text>
+
+  <!-- === RIGHT SIDE: BACKEND SERVICES === -->
+  <rect x="730" y="235" width="430" height="400" rx="12" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="750" y="258" font-size="11" fill="#64748b" font-weight="600" letter-spacing="2">BACKEND MICROSERVICES (FastAPI)</text>
+
+  <!-- Auth Service -->
+  <g transform="translate(750, 270)">
+    <rect width="190" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#34d399" font-weight="600">Auth Service</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">JWT + RBAC + 6 roles</text>
+    <text x="155" y="30" font-size="9" fill="#64748b">:8005</text>
+  </g>
+
+  <!-- Registry Service -->
+  <g transform="translate(750, 330)">
+    <rect width="190" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#34d399" font-weight="600">Registry Service</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">30 cameras + GIS</text>
+    <text x="155" y="30" font-size="9" fill="#64748b">:8001</text>
+  </g>
+
+  <!-- Watchlist Service -->
+  <g transform="translate(750, 390)">
+    <rect width="190" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#34d399" font-weight="600">Watchlist Service</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">Stolen + wanted DB</text>
+    <text x="155" y="30" font-size="9" fill="#64748b">:8002</text>
+  </g>
+
+  <!-- Alert Service -->
+  <g transform="translate(750, 450)">
+    <rect width="190" height="50" rx="8" fill="#1e293b" stroke="#f97316" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#fb923c" font-weight="600">Alert Service</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">CRUD + WebSocket + CSV</text>
+    <text x="155" y="30" font-size="9" fill="#64748b">:8003</text>
+  </g>
+
+  <!-- Search Service -->
+  <g transform="translate(750, 510)">
+    <rect width="190" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#34d399" font-weight="600">Search Service</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">Vehicle plate + trajectory</text>
+    <text x="155" y="30" font-size="9" fill="#64748b">:8004</text>
+  </g>
+
+  <!-- Alert Rules -->
+  <g transform="translate(960, 270)">
+    <rect width="180" height="50" rx="8" fill="#1e293b" stroke="#f97316" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#fb923c" font-weight="600">Alert Rules</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">Configurable triggers</text>
+  </g>
+
+  <!-- Demo Seeder -->
+  <g transform="translate(960, 330)">
+    <rect width="180" height="50" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <text x="15" y="20" font-size="12" fill="#94a3b8" font-weight="600">Demo Seeder</text>
+    <text x="15" y="35" font-size="9" fill="#64748b">Synthetic detections</text>
+  </g>
+
+  <!-- === ARROWS: Services → Redis === -->
+  <line x1="750" y1="475" x2="670" y2="495" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <line x1="750" y1="535" x2="670" y2="510" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- === ARROWS: Services → PostgreSQL === -->
+  <line x1="845" y1="560" x2="845" y2="590" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- === LAYER: DATABASES === -->
+  <g transform="translate(730, 595)">
+    <rect width="200" height="55" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="15" y="22" font-size="13" fill="#34d399" font-weight="700">PostgreSQL 15</text>
+    <text x="15" y="38" font-size="9" fill="#64748b">PostGIS + pgvector + UUID</text>
+  </g>
+  <g transform="translate(960, 595)">
+    <rect width="180" height="55" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <text x="15" y="22" font-size="13" fill="#94a3b8" font-weight="700">MinIO</text>
+    <text x="15" y="38" font-size="9" fill="#64748b">S3-compatible storage</text>
+  </g>
+
+  <!-- === LAYER: FRONTEND === -->
+  <rect x="30" y="670" width="1140" height="80" rx="12" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="50" y="693" font-size="11" fill="#64748b" font-weight="600" letter-spacing="2">CLIENT LAYER</text>
+
+  <!-- NGINX -->
+  <g transform="translate(60, 700)">
+    <rect width="200" height="40" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="15" y="16" font-size="12" fill="#22d3ee" font-weight="600">NGINX</text>
+    <text x="15" y="30" font-size="9" fill="#64748b">SSL :443  |  Reverse proxy</text>
+  </g>
+
+  <!-- Frontend -->
+  <g transform="translate(290, 700)">
+    <rect width="200" height="40" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="15" y="16" font-size="12" fill="#60a5fa" font-weight="600">React Frontend</text>
+    <text x="15" y="30" font-size="9" fill="#64748b">hls.js + Leaflet + Zustand</text>
+  </g>
+
+  <!-- Browser -->
+  <g transform="translate(520, 700)">
+    <rect width="180" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <text x="15" y="16" font-size="12" fill="#e2e8f0" font-weight="600">Browser</text>
+    <text x="15" y="30" font-size="9" fill="#64748b">Dashboard + VideoWall</text>
+  </g>
+
+  <!-- WebSocket indicator -->
+  <g transform="translate(740, 700)">
+    <rect width="180" height="40" rx="8" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+    <text x="15" y="16" font-size="12" fill="#f87171" font-weight="600">WebSocket</text>
+    <text x="15" y="30" font-size="9" fill="#64748b">Real-time alerts</text>
+  </g>
+
+  <!-- === ARROWS: Frontend → NGINX → Services === -->
+  <line x1="260" y1="720" x2="290" y2="720" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <line x1="490" y1="720" x2="520" y2="720" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+  <!-- Arrow from NGINX up to services -->
+  <line x1="160" y1="700" x2="160" y2="635" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="160" y1="635" x2="730" y2="635" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+
+  <!-- Docker label -->
+  <g transform="translate(60, 600)">
+    <rect width="120" height="30" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+    <text x="60" y="20" text-anchor="middle" font-size="10" fill="#60a5fa" font-weight="500">Docker Compose</text>
+  </g>
+
+  <!-- Container count badge -->
+  <g transform="translate(60, 635)">
+    <rect width="120" height="25" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+    <text x="60" y="17" text-anchor="middle" font-size="10" fill="#34d399" font-weight="500">13 Containers</text>
+  </g>
+</svg>

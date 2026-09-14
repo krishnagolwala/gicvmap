@@ -1,0 +1,242 @@
+logLevel: warn
+logDestinations: [stdout]
+
+rtmp: false
+srt: false
+
+# HLS — tuned for fast startup (<2s manifest availability)
+hls: true
+hlsAddress: :8888
+hlsVariant: fmp4        # supports BOTH H264 and H265 (mpegts is H264-only)
+hlsAlwaysRemux: true    # pre-start HLS muxers for active sources — avoids "muxer instance not available"
+hlsSegmentCount: 3         # MediaMTX minimum is 3
+hlsSegmentDuration: 1s     # was 2s — each segment = 1s, total buffer = 2s
+hlsPartDuration: 200ms     # low-latency HLS part size
+hlsDirectory: ""           # in-memory only (faster)
+
+# WebRTC — low-latency player for expanded single-camera view
+webrtc: true
+webrtcAddress: :8889
+
+# writeQueueSize — max packets queued per reader before it is dropped.
+# NOTE: the old 'readBufferCount' key is DEPRECATED in current MediaMTX and
+# was replaced by this option. It had been pinned to 4, which starved the
+# muxer queues — with internet jitter on the Sentinel path, bursts of
+# late/reordered packets overflowed, produced reordered frames, and crashed
+# the HLS muxer ("unable to extract DTS: too many reordered frames").
+# 4096 gives generous headroom for multi-second jitter bursts.
+writeQueueSize: 4096
+
+# Generous source timeouts — a lossy/stalling upstream should not be
+# dropped mid-stall (each drop+reconnect causes a reordered-frame burst).
+# Must be > 0.
+readTimeout: 120s
+writeTimeout: 120s
+
+# Anonymous auth — allow all (PoC only)
+authMethod: internal
+authInternalUsers:
+  - user: any
+    pass:
+    ips: []
+    permissions:
+      - action: publish
+        path:
+      - action: read
+        path:
+      - action: playback
+        path:
+      - action: api
+      - action: metrics
+
+# ─── Sentinel Camera Grid ────────────────────────────────────
+# All 30 cameras from the Sentinel Camera Grid.
+# Credentials injected via env vars: YOUR_EMAIL_URLENCODED / YOUR_SENTINEL_PASSWORD
+# Per Sentinel Integrator Guide:
+#   - RTSP over TCP (rtspTransport: tcp) — mandatory
+#   - sourceOnDemand: yes — stream starts when first viewer requests it
+#   - sourceOnDemandCloseAfter: 300s — keep open 5min after last viewer
+#   - sourceOnDemandStartTimeout: 15s — fail fast if RTSP source unreachable
+#   - Mixed H.264/H.265 codecs — use hlsVariant: fmp4
+
+paths:
+  "cam01":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam01
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam02":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam02
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam03":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam03
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam04":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam04
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam05":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam05
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam06":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam06
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam07":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam07
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam08":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam08
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam09":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam09
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam10":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam10
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam11":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam11
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam12":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam12
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam13":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam13
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam14":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam14
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam15":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam15
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam16":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam16
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam17":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam17
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam18":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam18
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam19":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam19
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam20":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam20
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam21":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam21
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam22":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam22
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam23":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam23
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam24":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam24
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam25":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam25
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam26":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam26
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam27":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam27
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam28":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam28
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam29":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam29
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp
+  "cam30":
+    source: rtsp://YOUR_EMAIL_URLENCODED:YOUR_SENTINEL_PASSWORD@103.250.160.189:8554/stream/cam30
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 15s
+    sourceOnDemandCloseAfter: 300s
+    rtspTransport: tcp

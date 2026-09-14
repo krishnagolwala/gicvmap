@@ -1,0 +1,31 @@
+# ═══════════════════════════════════════════════════════════════
+# GICVMAP — AI Service Dependencies (slim CPU-only build)
+# ═══════════════════════════════════════════════════════════════
+
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.3
+python-multipart==0.0.6
+
+# AI/ML — ultralytics pulls torch; CUDA torch is installed in Dockerfile
+ultralytics>=8.0.0
+
+# OCR — lightweight alternative to PaddleOCR
+easyocr>=1.7.0
+
+# Video capture
+opencv-python-headless>=4.8.0
+numpy
+
+# Storage
+minio==7.2.7
+
+# Redis
+redis[hiredis]==5.0.1
+
+# HTTP
+httpx==0.25.2
+
+# Database (for startup camera metadata lookup)
+sqlalchemy==2.0.23
+asyncpg==0.29.0

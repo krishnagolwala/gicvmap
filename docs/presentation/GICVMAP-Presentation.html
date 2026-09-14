@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GICVMAP - Gujarat Police Innovation Hackathon 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0e1a;
+    color: #e2e8f0;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 80px;
+    position: relative;
+  }
+
+  .slide.active { display: flex; }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .slide-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 80px;
+    font-size: 13px;
+    color: #475569;
+  }
+
+  /* Title Slide */
+  .slide-title {
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 50%, #0f172a 100%);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slide-title h1 {
+    font-size: 64px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    letter-spacing: -2px;
+  }
+
+  .slide-title .subtitle {
+    font-size: 24px;
+    color: #94a3b8;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .slide-title .badge {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .slide-title .hackathon {
+    margin-top: 24px;
+    font-size: 16px;
+    color: #64748b;
+  }
+
+  /* Content Slides */
+  h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #f1f5f9;
+    letter-spacing: -1px;
+  }
+
+  h2 .accent {
+    color: #3b82f6;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    flex: 1;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    flex: 1;
+  }
+
+  .card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card h3 .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .card p, .card li {
+    font-size: 15px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3b82f6;
+  }
+
+  .icon-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .icon-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+  .icon-purple { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+  .icon-orange { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+  .icon-red { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+  .icon-cyan { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .stat-card .number {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-card .label {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .tech-item {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .tech-item .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+
+  .tech-item .desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+  }
+
+  .pipeline-step {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .pipeline-step .step-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .pipeline-step .step-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+
+  .pipeline-step .step-tech {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  .pipeline-arrow {
+    color: #3b82f6;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 20px;
+  }
+
+  .highlight-box h3 {
+    font-size: 20px;
+    color: #60a5fa;
+    margin-bottom: 12px;
+  }
+
+  .highlight-box p {
+    font-size: 16px;
+    color: #94a3b8;
+    line-height: 1.8;
+  }
+
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .role-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .role-card .role-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+  }
+
+  .role-card .role-dept {
+    font-size: 12px;
+    color: #3b82f6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .role-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .role-card ul li {
+    font-size: 13px;
+    color: #94a3b8;
+    padding: 2px 0;
+  }
+
+  /* Slide transitions */
+  .slide { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Print styles */
+  @media print {
+    .slide { display: flex !important; page-break-after: always; height: 100vh; }
+    .controls { display: none !important; }
+  }
+
+  .controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .controls button {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    color: #e2e8f0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .controls button:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  .impact-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .impact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  }
+
+  .impact-list li:last-child { border-bottom: none; }
+
+  .impact-metric {
+    font-size: 28px;
+    font-weight: 800;
+    color: #3b82f6;
+    min-width: 100px;
+    text-align: right;
+  }
+
+  .impact-text h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 4px;
+  }
+
+  .impact-text p {
+    font-size: 14px;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide slide-title active" id="slide1">
+  <div class="badge">Gujarat Police Innovation Hackathon 2026</div>
+  <h1>GICVMAP</h1>
+  <div class="subtitle">Gujarat Integrated CCTV Video Management & Analytics Platform</div>
+  <div class="hackathon">Model 1 + Hybrid Architecture &mdash; Centralized Registry, AI Analytics, Unified Dashboard</div>
+  <div class="slide-footer">GICVMAP &mdash; Confidential</div>
+  <div class="slide-number">1 / 12</div>
+</div>
+
+<!-- Slide 2: Problem -->
+<div class="slide" id="slide2">
+  <h2>The <span class="accent">Problem</span></h2>
+  <div class="two-col">
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-red">&#9888;</span> Current Challenges</h3>
+        <ul>
+          <li>30+ Sentinel cameras across Ahmedabad with no unified monitoring</li>
+          <li>Manual CCTV review takes hours per incident</li>
+          <li>Siloed departments: Police, Municipal Corp, RTO operate independently</li>
+          <li>No automated detection of stolen vehicles or wanted persons</li>
+          <li>Alerts rely on human observation &mdash; slow response times</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3><span class="icon icon-orange">&#128200;</> The Cost</h3>
+        <ul>
+          <li>30+ minutes average response time for critical incidents</li>
+          <li>Operators monitoring 30+ feeds simultaneously &mdash; fatigue & errors</li>
+          <li>No vehicle trajectory tracking across camera network</li>
+          <li>Watchlist matching done manually, if at all</li>
+          <li>No cross-department data sharing or coordination</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Problem Statement</div>
+  <div class="slide-number">2 / 12</div>
+</div>
+
+<!-- Slide 3: Solution Overview -->
+<div class="slide" id="slide3">
+  <h2>Our <span class="accent">Solution</span></h2>
+  <div class="highlight-box">
+    <h3>GICVMAP &mdash; AI-Powered CCTV Intelligence Platform</h3>
+    <p>A centralized command-and-control platform that connects Gujarat's existing Sentinel CCTV infrastructure with real-time AI analytics. The system processes live camera feeds through YOLOv8 object detection and EasyOCR license plate recognition, automatically matching detections against watchlists and generating instant alerts &mdash; reducing response time from 30+ minutes to under 5 minutes.</p>
+  </div>
+  <div class="three-col" style="margin-top: 30px;">
+    <div class="card">
+      <h3><span class="icon icon-blue">&#128247;</span> See</h3>
+      <p>30 live Sentinel camera feeds through unified VideoWall with HLS streaming and GIS-based camera mapping</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-green">&#129504;</span> Think</h3>
+      <p>YOLOv8 detects persons & vehicles. EasyOCR reads plates. Redis streams events in real-time for instant processing</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-purple">&#128680;</span> Act</h3>
+      <p>Watchlist matching generates CRITICAL/HIGH alerts. WebSocket push notifies operators instantly. Vehicle trajectories reconstructed</p>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Solution Overview</div>
+  <div class="slide-number">3 / 12</div>
+</div>
+
+<!-- Slide 4: Architecture -->
+<div class="slide" id="slide4">
+  <h2>System <span class="accent">Architecture</span></h2>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="step-icon">&#127909;</div>
+      <div class="step-name">Sentinel Cameras</div>
+      <div class="step-tech">30 RTSP feeds</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-step">
+      <div class="step-icon">&#128225;</div>
+      <div class="step-name">MediaMTX</div>
+      <div class="step-tech">RTSP relay</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-step">
+      <div class="step-icon">&#129504;</div>
+      <div class="step-name">AI Service</div>
+      <div class="step-tech">YOLOv8 + OCR</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-step">
+      <div class="step-icon">&#9889;</div>
+      <div class="step-name">Redis Stream</div>
+      <div class="step-tech">Event bus</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-step">
+      <div class="step-icon">&#128680;</div>
+      <div class="step-name">Alert Worker</div>
+      <div class="step-tech">Watchlist match</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-step">
+      <div class="step-icon">&#128187;</div>
+      <div class="step-name">Dashboard</div>
+      <div class="step-tech">WebSocket push</div>
+    </div>
+  </div>
+  <div class="two-col" style="margin-top: 20px;">
+    <div class="card">
+      <h3><span class="icon icon-blue">&#9881;</span> Backend Microservices</h3>
+      <ul>
+        <li><strong>Auth Service</strong> &mdash; JWT authentication, RBAC, 6 roles</li>
+        <li><strong>Registry Service</strong> &mdash; 30 camera metadata, GIS coordinates</li>
+        <li><strong>Watchlist Service</strong> &mdash; Stolen vehicles, wanted persons</li>
+        <li><strong>Alert Service</strong> &mdash; CRUD, WebSocket, CSV export</li>
+        <li><strong>Search Service</strong> &mdash; Vehicle plate search, trajectory</li>
+        <li><strong>AI Service</strong> &mdash; YOLO + OCR inference engine</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-green">&#128190;</span> Infrastructure</h3>
+      <ul>
+        <li><strong>PostgreSQL 15</strong> + PostGIS &mdash; Spatial queries, camera GIS</li>
+        <li><strong>Redis</strong> &mdash; Event streaming, detection_events stream</li>
+        <li><strong>MinIO</strong> &mdash; Object storage for exports</li>
+        <li><strong>MediaMTX</strong> &mdash; RTSP relay, HLS/WebRTC gateway</li>
+        <li><strong>NGINX</strong> &mdash; Reverse proxy, SSL termination, HLS proxy</li>
+        <li><strong>Docker Compose</strong> &mdash; 13 containers, fully containerized</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Architecture</div>
+  <div class="slide-number">4 / 12</div>
+</div>
+
+<!-- Slide 5: Tech Stack -->
+<div class="slide" id="slide5">
+  <h2>Technology <span class="accent">Stack</span></h2>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="name">React 18</div>
+      <div class="desc">Frontend SPA + TypeScript</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">Tailwind CSS</div>
+      <div class="desc">Utility-first styling</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">Zustand</div>
+      <div class="desc">Lightweight state management</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">FastAPI</div>
+      <div class="desc">Python async microservices</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">PostgreSQL 15</div>
+      <div class="desc">+ PostGIS + pgvector</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">Redis</div>
+      <div class="desc">Event streaming + cache</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">YOLOv8</div>
+      <div class="desc">Object detection (CPU)</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">EasyOCR</div>
+      <div class="desc">License plate recognition</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">OpenCV</div>
+      <div class="desc">Video frame processing</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">hls.js</div>
+      <div class="desc">HLS video streaming</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">Leaflet.js</div>
+      <div class="desc">GIS camera mapping</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">Docker</div>
+      <div class="desc">13-container orchestration</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">MediaMTX</div>
+      <div class="desc">RTSP relay gateway</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">NGINX</div>
+      <div class="desc">Reverse proxy + SSL</div>
+    </div>
+    <div class="tech-item">
+      <div class="name">MinIO</div>
+      <div class="desc">S3-compatible storage</div>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Tech Stack</div>
+  <div class="slide-number">5 / 12</div>
+</div>
+
+<!-- Slide 6: AI Pipeline -->
+<div class="slide" id="slide6">
+  <h2>AI <span class="accent">Pipeline</span></h2>
+  <div class="two-col">
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-blue">&#128247;</span> Object Detection</h3>
+        <ul>
+          <li>YOLOv8 nano model running on CPU</li>
+          <li>Detects: persons, cars, motorcycles, buses, trucks</li>
+          <li>Configurable confidence threshold (default 0.5)</li>
+          <li>Frame sampling at 2 FPS per camera (configurable)</li>
+          <li>Inference semaphore: max 4 concurrent detections</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-green">&#128196;</span> Plate Recognition</h3>
+        <ul>
+          <li>EasyOCR with pre-baked Indian plate models</li>
+          <li>Reads GJ-format plates (e.g., GJ27EF9012)</li>
+          <li>Confidence scoring on each OCR result</li>
+          <li>Plate text stored with detection event</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-purple">&#9889;</span> Event Streaming</h3>
+        <ul>
+          <li>Redis Stream: <code>detection_events</code></li>
+          <li>Each event: camera_id, bbox, class, confidence, plate_number, timestamp</li>
+          <li>10,000+ events processed in real-time</li>
+          <li>Consumer groups for parallel alert processing</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-red">&#128680;</span> Watchlist Matching</h3>
+        <ul>
+          <li>Plate matched against stolen vehicle database</li>
+          <li>CRITICAL alert: stolen vehicles, missing persons</li>
+          <li>HIGH alert: wanted persons, suspect vehicles</li>
+          <li>Auto-generated with severity, timestamp, camera location</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; AI Pipeline</div>
+  <div class="slide-number">6 / 12</div>
+</div>
+
+<!-- Slide 7: Key Features 1 -->
+<div class="slide" id="slide7">
+  <h2>Key <span class="accent">Features</span></h2>
+  <div class="three-col">
+    <div class="card">
+      <h3><span class="icon icon-blue">&#127909;</span> VideoWall</h3>
+      <ul>
+        <li>30-camera live grid</li>
+        <li>HLS streaming via hls.js</li>
+        <li>Batch loading for performance</li>
+        <li>Auto-reconnect on failure</li>
+        <li>Camera status indicators</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-green">&#128269;</span> Vehicle Search</h3>
+      <ul>
+        <li>Search by plate number</li>
+        <li>Route reconstruction on map</li>
+        <li>Timeline view with detections</li>
+        <li>CSV export of results</li>
+        <li>Leaflet GIS integration</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-purple">&#128680;</span> Alert System</h3>
+      <ul>
+        <li>Real-time WebSocket alerts</li>
+        <li>Severity: CRITICAL, HIGH, MEDIUM, LOW</li>
+        <li>Acknowledge / dismiss workflow</li>
+        <li>Configurable alert rules</li>
+        <li>CSV export of alert history</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-orange">&#128205;</span> Camera Map</h3>
+      <ul>
+        <li>GIS-based camera locations</li>
+        <li>Interactive Leaflet map</li>
+        <li>Department color coding</li>
+        <li>Click for camera details</li>
+        <li>30 cameras across Ahmedabad</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-cyan">&#128101;</span> Access Control</h3>
+      <ul>
+        <li>6 roles: superadmin, dept_admin, operator, viewer, analyst, auditor</li>
+        <li>13 granular feature permissions</li>
+        <li>Multi-department isolation</li>
+        <li>Camera-level access control</li>
+        <li>Full audit logging</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="icon icon-red">&#128202;</span> Analytics & Reports</h3>
+      <ul>
+        <li>Detection statistics dashboard</li>
+        <li>Alert trend charts</li>
+        <li>Camera utilization metrics</li>
+        <li>CSV export for all data</li>
+        <li>Date-range filtering</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Features</div>
+  <div class="slide-number">7 / 12</div>
+</div>
+
+<!-- Slide 8: Access Control -->
+<div class="slide" id="slide8">
+  <h2>Role-Based <span class="accent">Access Control</span></h2>
+  <div class="role-grid">
+    <div class="role-card">
+      <div class="role-dept">Level 4</div>
+      <div class="role-name">Super Admin</div>
+      <ul>
+        <li>Full system access</li>
+        <li>All 13 permissions</li>
+        <li>User management</li>
+        <li>System configuration</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-dept">Level 3</div>
+      <div class="role-name">Dept Admin</div>
+      <ul>
+        <li>Department-scoped access</li>
+        <li>Camera management</li>
+        <li>Watchlist management</li>
+        <li>User within department</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-dept">Level 2</div>
+      <div class="role-name">Operator</div>
+      <ul>
+        <li>Live feed viewing</li>
+        <li>Alert acknowledge/dismiss</li>
+        <li>Vehicle search</li>
+        <li>Export data</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-dept">Level 2</div>
+      <div class="role-name">Analyst</div>
+      <ul>
+        <li>Analytics dashboards</li>
+        <li>Report generation</li>
+        <li>Vehicle search</li>
+        <li>Data export</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-dept">Level 1</div>
+      <div class="role-name">Viewer</div>
+      <ul>
+        <li>Live feed viewing only</li>
+        <li>Read-only alerts</li>
+        <li>Camera map view</li>
+        <li>No modify permissions</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-dept">Level 1</div>
+      <div class="role-name">Auditor</div>
+      <ul>
+        <li>View audit logs</li>
+        <li>View all departments</li>
+        <li>Read-only access</li>
+        <li>Compliance reporting</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top: 24px;">
+    <h3>Multi-Department Camera Isolation</h3>
+    <p>Police (25 cameras), Municipal Corp (5 cameras), RTO, Transport &mdash; each department sees only their assigned cameras and alerts. Super Admin has cross-department visibility.</p>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Access Control</div>
+  <div class="slide-number">8 / 12</div>
+</div>
+
+<!-- Slide 9: Sentinel Integration -->
+<div class="slide" id="slide9">
+  <h2>Sentinel Camera <span class="accent">Integration</span></h2>
+  <div class="two-col">
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-blue">&#128225;</span> Protocol Support</h3>
+        <ul>
+          <li><strong>RTSP</strong> &mdash; Direct inference via TCP (primary path)</li>
+          <li><strong>HLS</strong> &mdash; Dashboard streaming via CDN</li>
+          <li><strong>WebRTC/WHEP</strong> &mdash; Low-latency browser preview</li>
+          <li>MediaMTX acts as local relay for AI processing</li>
+          <li>30 cameras: cam01 &ndash; cam30</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-green">&#9889;</span> Resilience</h3>
+        <ul>
+          <li>Exponential backoff reconnection (2s &rarr; 30s cap)</li>
+          <li>Per-camera stream isolation</li>
+          <li>Graceful handling of H.264/H.265 mix</li>
+          <li>PTS-based timing (never CAP_PROP_FPS)</li>
+          <li>Inter-frame gap tolerance</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3><span class="icon icon-purple">&#127760;</span> Camera Coverage</h3>
+        <ul>
+          <li>Cam01 &ndash; Cam03: Central Ahmedabad (Police)</li>
+          <li>Cam04, Cam07 &ndash; Cam10: Municipal Corp zones</li>
+          <li>Cam11 &ndash; Cam20: Western Ahmedabad (Police)</li>
+          <li>Cam21 &ndash; Cam30: Eastern & North Ahmedabad</li>
+          <li>All 1080p H.264, 25fps native</li>
+          <li>GPS coordinates for GIS mapping</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Sentinel Integration</div>
+  <div class="slide-number">9 / 12</div>
+</div>
+
+<!-- Slide 10: Impact -->
+<div class="slide" id="slide10">
+  <h2>Expected <span class="accent">Impact</span></h2>
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="number">&lt;5min</div>
+      <div class="label">Alert Response Time</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">70%</div>
+      <div class="label">Less Manual Monitoring</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">90%</div>
+      <div class="label">Faster Identification</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">30</div>
+      <div class="label">Cameras Connected</div>
+    </div>
+  </div>
+  <ul class="impact-list">
+    <li>
+      <div class="impact-metric">70%</div>
+      <div class="impact-text">
+        <h4>Reduced Manual Workload</h4>
+        <p>AI-driven automated detection replaces manual CCTV monitoring across 30+ feeds</p>
+      </div>
+    </li>
+    <li>
+      <div class="impact-metric">90%</div>
+      <div class="impact-text">
+        <h4>Faster Suspect Identification</h4>
+        <p>From hours of manual review to real-time plate recognition and watchlist matching</p>
+      </div>
+    </li>
+    <li>
+      <div class="impact-metric">6x</div>
+      <div class="impact-text">
+        <h4>Faster Incident Response</h4>
+        <p>Critical incidents flagged in under 5 minutes vs. 30+ minutes previously</p>
+      </div>
+    </li>
+    <li>
+      <div class="impact-metric">100%</div>
+      <div class="impact-text">
+        <h4>Cross-Department Coordination</h4>
+        <p>Police, Municipal, RTO share a unified platform instead of siloed systems</p>
+      </div>
+    </li>
+  </ul>
+  <div class="slide-footer">GICVMAP &mdash; Impact</div>
+  <div class="slide-number">10 / 12</div>
+</div>
+
+<!-- Slide 11: Scalability -->
+<div class="slide" id="slide11">
+  <h2>Scalability & <span class="accent">Future Scope</span></h2>
+  <div class="two-col">
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-blue">&#128640;</span> Horizontal Scaling</h3>
+        <ul>
+          <li>Add more Sentinel cameras without code changes</li>
+          <li>Scale AI service with GPU nodes for more cameras</li>
+          <li>Redis Cluster for high-throughput event streaming</li>
+          <li>Kubernetes deployment for production</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-green">&#128295;</span> Planned Enhancements</h3>
+        <ul>
+          <li>Face recognition for wanted persons</li>
+          <li>Predictive analytics from historical data</li>
+          <li>Mobile app for field officers</li>
+          <li>Integration with FIR management system</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><span class="icon icon-purple">&#127961;</span> State-Wide Rollout</h3>
+        <ul>
+          <li>Extend to all Gujarat districts</li>
+          <li>500+ cameras per district</li>
+          <li>State-level command center dashboard</li>
+          <li>Inter-district alert sharing</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-orange">&#128176;</span> Cost Savings</h3>
+        <ul>
+          <li>&#8377;15-20 lakhs/year savings per district in manual surveillance</li>
+          <li>Reduced manpower for CCTV monitoring</li>
+          <li>Faster case resolution = better policing outcomes</li>
+          <li>Foundation for smart city infrastructure</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Scalability</div>
+  <div class="slide-number">11 / 12</div>
+</div>
+
+<!-- Slide 12: Thank You -->
+<div class="slide slide-title" id="slide12">
+  <div class="badge">Demo & Q&A</div>
+  <h1>Thank You</h1>
+  <div class="subtitle">GICVMAP &mdash; Gujarat Integrated CCTV Video Management & Analytics Platform</div>
+  <div class="hackathon" style="margin-top: 20px;">
+    <div style="font-size: 18px; color: #94a3b8; margin-bottom: 12px;">Live System Running</div>
+    <div style="font-size: 14px; color: #64748b;">
+      https://localhost &nbsp;|&nbsp; 30 Sentinel Cameras &nbsp;|&nbsp; AI Inference Active &nbsp;|&nbsp; 13 Docker Containers
+    </div>
+  </div>
+  <div class="slide-footer">GICVMAP &mdash; Gujarat Police Innovation Hackathon 2026</div>
+  <div class="slide-number">12 / 12</div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button onclick="prevSlide()">&larr; Previous</button>
+  <button onclick="nextSlide()">Next &rarr;</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 12;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide' + n).classList.add('active');
+    current = n;
+  }
+
+  function nextSlide() { if (current < total) showSlide(current + 1); }
+  function prevSlide() { if (current > 1) showSlide(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  });
+</script>
+
+</body>
+</html>

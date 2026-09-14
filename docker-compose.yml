@@ -1,0 +1,345 @@
+# ═══════════════════════════════════════════════════════════════
+# GICVMAP — Gujarat Integrated CCTV Video Management Platform
+# Docker Compose Configuration (PoC / Hackathon)
+# ═══════════════════════════════════════════════════════════════
+
+services:
+
+  # ─── Database ──────────────────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg15
+    container_name: gicvmap-postgres
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+    environment:
+      POSTGRES_DB: gicvmap
+      POSTGRES_USER: gicvmap_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-gicvmap_secret_2026}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gicvmap_admin -d gicvmap"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gicvmap-network
+
+  # ─── Cache / Message Queue ─────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: gicvmap-redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gicvmap-network
+
+  # ─── Object Storage ────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: gicvmap-minio
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - gicvmap-network
+
+  # ─── Stream Gateway ────────────────────────────────────────
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: gicvmap-mediamtx
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8554:8554"   # RTSP
+      - "8888:8888"   # HLS
+      - "8889:8889"   # WebRTC
+    volumes:
+      - ./stream-gateway/mediamtx.yml:/mediamtx.yml
+    networks:
+      - gicvmap-network
+
+  # ─── Backend Services ──────────────────────────────────────
+  registry-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-registry
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      SERVICE_NAME: registry
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-gicvmap-jwt-secret-key-2026-minimum-32-characters}
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./stream-gateway/mediamtx.yml:/mediamtx.yml:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  watchlist-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-watchlist
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      SERVICE_NAME: watchlist
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-gicvmap-jwt-secret-key-2026-minimum-32-characters}
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  alert-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-alert
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      SERVICE_NAME: alert
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-gicvmap-jwt-secret-key-2026-minimum-32-characters}
+    ports:
+      - "8003:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  demo-seeder:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-demo-seeder
+    restart: unless-stopped
+    command: ["python", "-u", "demo_seeder.py"]
+    volumes:
+      - ./backend/demo_seeder.py:/app/demo_seeder.py:ro
+    environment:
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  search-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-search
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      SERVICE_NAME: search
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-gicvmap-jwt-secret-key-2026-minimum-32-characters}
+    ports:
+      - "8004:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gicvmap-auth
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      SERVICE_NAME: auth
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      JWT_SECRET: ${JWT_SECRET:-gicvmap-jwt-secret-key-2026-minimum-32-characters}
+    ports:
+      - "8005:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - gicvmap-network
+
+  # ─── AI Service ────────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./backend/ai-service
+      dockerfile: Dockerfile
+    container_name: gicvmap-ai
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2304M
+    environment:
+      DATABASE_URL: postgresql+asyncpg://gicvmap_admin:${DB_PASSWORD:-gicvmap_secret_2026}@postgres:5432/gicvmap
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      AI_DEVICE: "cpu"
+      AI_FPS_DEFAULT: "2"
+      AI_CONFIDENCE_THRESHOLD: "0.5"
+      MAX_CONCURRENT_INFERENCE: "4"
+      EASYOCR_MODULE_PATH: /root/.EasyOCR
+      SENTINEL_HOST: 103.250.160.189
+      RTSP_PORT: "8554"
+      RTSP_HOST: mediamtx
+      RTSP_USE_LOCAL: "true"
+      SENTINEL_USER: ${SENTINEL_USER}
+      SENTINEL_PASS: ${SENTINEL_PASS}
+      CAMERAS_JSON_URL: "https://cctv.corp8.cloud/cameras.json"
+      CAMERA_STREAMS: "cam01,cam02,cam03,cam04,cam05,cam06,cam07,cam08,cam09,cam10,cam11,cam12,cam13,cam14,cam15,cam16,cam17,cam18,cam19,cam20,cam21,cam22,cam23,cam24,cam25,cam26,cam27,cam28,cam29,cam30"
+    ports:
+      - "8010:8000"
+    volumes:
+      - ./models:/app/models
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+      mediamtx:
+        condition: service_started
+    networks:
+      - gicvmap-network
+
+  # ─── Frontend ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gicvmap-frontend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - gicvmap-network
+
+  # ─── Reverse Proxy ─────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: gicvmap-nginx
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    ports:
+      - "${NGINX_PORT:-80}:80"
+      - "${NGINX_SSL_PORT:-443}:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+      - registry-service
+      - alert-service
+      - search-service
+      - watchlist-service
+      - auth-service
+    networks:
+      - gicvmap-network
+
+# ─── Volumes ──────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+
+# ─── Networks ─────────────────────────────────────────────────
+networks:
+  gicvmap-network:
+    driver: bridge
+    name: gicvmap-network

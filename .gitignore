@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════════
+# GICVMAP — .gitignore (public hackathon repo)
+# Rule: no real credentials, keys, or heavy binaries in git
+# ═══════════════════════════════════════════════════════════════
+
+# ─── Environment & secrets (NEVER commit) ─────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# ─── Local-only stream config (contains Sentinel credentials) ─
+# The repo ships stream-gateway/mediamtx.example.yml instead.
+# Locally: copy mediamtx.example.yml -> mediamtx.yml and fill in creds.
+stream-gateway/mediamtx.yml
+!stream-gateway/mediamtx.example.yml
+
+# ─── Offline docker image cache (100+ MB tarballs, local only) ─
+docker-export/
+
+# ─── Dependencies ─────────────────────────────────────────────
+node_modules/
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env_venv/
+pip-wheel-metadata/
+
+# ─── Model weights (downloaded at build time, not checked in) ─
+models/*.pt
+models/*.pth
+models/*.bin
+models/*.onnx
+models/*.zip
+!models/.gitkeep
+
+# ─── Build outputs ────────────────────────────────────────────
+frontend/dist/
+frontend/build/
+dist/
+build/
+*.log
+*.tmp
+
+# ─── OS / IDE ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
